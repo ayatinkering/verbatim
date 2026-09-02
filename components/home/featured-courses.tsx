@@ -5,19 +5,20 @@ import { NextJsIcon, DockerIcon, TypeScriptIcon } from "@/components/icons/tech-
 
 export interface CourseItem {
   id: string;
+  slug: string;
   icon: React.ReactNode;
   title: string;
   description: string;
   level: string;
   duration: string;
   modulesCount: number;
-  href?: string;
 }
 
 export function FeaturedCourses() {
   const courses: CourseItem[] = [
     {
       id: "nextjs-production",
+      slug: "nextjs-app-router-in-depth",
       icon: <NextJsIcon />,
       title: "Next.js for Production",
       description:
@@ -28,6 +29,7 @@ export function FeaturedCourses() {
     },
     {
       id: "docker-essentials",
+      slug: "devops-with-docker-and-kubernetes",
       icon: <DockerIcon />,
       title: "Docker Essentials",
       description:
@@ -38,6 +40,7 @@ export function FeaturedCourses() {
     },
     {
       id: "typescript-deep-dive",
+      slug: "typescript-for-application-developers",
       icon: <TypeScriptIcon />,
       title: "TypeScript Deep Dive",
       description:
@@ -70,9 +73,10 @@ export function FeaturedCourses() {
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {courses.map((course) => (
-          <div
+          <Link
             key={course.id}
-            className="group relative flex flex-col justify-between rounded-[16px] border border-neutral-200/90 bg-white p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-primary-300/80 cursor-pointer"
+            href={`/courses/${course.slug}`}
+            className="group relative flex flex-col justify-between rounded-[16px] border border-neutral-200/90 bg-white p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-primary-300/80 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
           >
             <div className="space-y-3">
               <div className="shrink-0">{course.icon}</div>
@@ -100,7 +104,7 @@ export function FeaturedCourses() {
                 {course.modulesCount} modules
               </span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
