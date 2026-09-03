@@ -7,7 +7,11 @@ import { HeroSection } from "@/components/home/hero-section";
 import { FeaturedCourses } from "@/components/home/featured-courses";
 import { BottomGraphic } from "@/components/home/bottom-graphic";
 
+import { useRouter } from "next/navigation";
+
 export default function HomePage() {
+  const router = useRouter();
+
   const handleExplore = () => {
     posthog.capture("hero_explore_clicked");
     const coursesSection = document.getElementById("courses-section");
@@ -20,7 +24,9 @@ export default function HomePage() {
     posthog.capture("hero_search_submitted", {
       query_length: query.length,
     });
-    console.log("Searching for:", query);
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    }
   };
 
   return (
