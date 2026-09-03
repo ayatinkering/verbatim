@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: "A unified design language for Verbatim learning platform.",
 };
 
+import { WebMCPProvider } from "@/components/webmcp/webmcp-provider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,8 +35,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-[#FAFCF9] text-neutral-900">
         <ClerkProvider>
-          <PostHogIdentify />
-          {children}
+          <WebMCPProvider>
+            <PostHogIdentify />
+            {children}
+          </WebMCPProvider>
         </ClerkProvider>
       </body>
     </html>

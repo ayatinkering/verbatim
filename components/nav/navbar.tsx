@@ -32,6 +32,10 @@ function NotificationsButton() {
 function AuthControls() {
   return (
     <>
+      <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[11px] font-bold tracking-tight">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+        <span>WebMCP Agent Ready</span>
+      </div>
       <Show when="signed-out">
         <NotificationsButton />
         <SignInButton mode="modal">
