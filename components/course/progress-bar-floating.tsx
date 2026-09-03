@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import posthog from "posthog-js";
 
 export interface ProgressBarFloatingProps {
   percentage?: number;
@@ -37,6 +38,12 @@ export function ProgressBarFloating({
         {/* Right: Continue Learning CTA */}
         <Link
           href={continueHref}
+          onClick={() =>
+            posthog.capture("continue_learning_clicked", {
+              progress_percentage: percentage,
+              destination: continueHref,
+            })
+          }
           className="w-full sm:w-auto h-11 px-5 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm transition-all shadow-sm flex items-center justify-center gap-2 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
         >
           <span>Continue Learning</span>

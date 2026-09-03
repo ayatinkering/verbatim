@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, ChevronUp, PlayCircle } from "lucide-react";
+import posthog from "posthog-js";
 import { formatDuration } from "@/lib/utils";
 
 export interface LessonItem {
@@ -127,11 +128,18 @@ export function CourseContent({
     ? formatDuration(totalDurationSeconds)
     : "18h 24m";
 
-  const toggleModule = (key: string) => {
+  const toggleModule = (key: string, moduleTitle: string) => {
+    const willExpand = !expandedKeys[key];
     setExpandedKeys((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
+    if (willExpand) {
+      posthog.capture("module_expanded", {
+        module_key: key,
+        module_title: moduleTitle,
+      });
+    }
   };
 
   const calculateModuleDuration = (mod: ModuleItem, index: number) => {
@@ -175,7 +183,7 @@ export function CourseContent({
               {/* Module Header Row */}
               <button
                 type="button"
-                onClick={() => toggleModule(modKey)}
+                onClick={() => toggleModule(modKey, mod.title)}
                 className="w-full p-4 sm:p-5 flex items-center justify-between gap-4 text-left hover:bg-neutral-50/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 select-none"
                 aria-expanded={isExpanded}
               >
@@ -224,6 +232,15 @@ export function CourseContent({
                         />
                         <Link
                           href={`/lessons/${lesson.slug}`}
+                          onClick={() =>
+                            posthog.capture("lesson_clicked", {
+                              lesson_id: lesson._id,
+                              lesson_slug: lesson.slug,
+                              lesson_title: lesson.title,
+                              module_title: mod.title,
+                              is_free_preview: lesson.freePreview ?? false,
+                            })
+                          }
                           className="text-xs sm:text-sm font-medium text-neutral-800 group-hover:text-primary-600 transition-colors truncate"
                         >
                           {lesson.title}

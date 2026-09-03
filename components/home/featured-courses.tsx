@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, BarChart2, Clock, Layers, Star } from "lucide-react";
+import posthog from "posthog-js";
 import { NextJsIcon, DockerIcon, TypeScriptIcon } from "@/components/icons/tech-icons";
 
 export interface CourseItem {
@@ -60,6 +63,7 @@ export function FeaturedCourses() {
         </h2>
         <Link
           href="/courses"
+          onClick={() => posthog.capture("view_all_courses_clicked", { source: "home_featured" })}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors group"
         >
           <span>View all courses</span>
@@ -76,6 +80,14 @@ export function FeaturedCourses() {
           <Link
             key={course.id}
             href={`/courses/${course.slug}`}
+            onClick={() =>
+              posthog.capture("featured_course_clicked", {
+                course_id: course.id,
+                course_slug: course.slug,
+                course_title: course.title,
+                course_level: course.level,
+              })
+            }
             className="group relative flex flex-col justify-between rounded-[16px] border border-neutral-200/90 bg-white p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-primary-300/80 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
           >
             <div className="space-y-3">

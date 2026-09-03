@@ -1,9 +1,8 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { BarChart2, Clock, Layers } from "lucide-react";
 import { Navbar } from "@/components/nav/navbar";
 import { NextJsIcon, DockerIcon, TypeScriptIcon } from "@/components/icons/tech-icons";
+import { CourseCard } from "@/components/course/course-card";
 import { getCourses } from "@/sanity/lib/fetch";
 import { urlFor } from "@/sanity/lib/image";
 import type { SanityCourse } from "@/sanity/lib/types";
@@ -116,59 +115,20 @@ export default async function CoursesIndexPage() {
         {/* Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {courses.map((course) => {
-            const formattedLevel = course.level
-              ? course.level.charAt(0).toUpperCase() + course.level.slice(1)
-              : "Intermediate";
-
             const moduleCount = course.moduleCount ?? course.modules?.length ?? 12;
 
             return (
-              <Link
+              <CourseCard
                 key={course._id || course.slug}
-                href={`/courses/${course.slug}`}
-                className="group relative flex flex-col justify-between rounded-2xl border border-neutral-200/90 bg-white p-5 sm:p-6 shadow-xs transition-all duration-200 hover:shadow-md hover:border-primary-300/80 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
-              >
-                <div className="space-y-3.5">
-                  {/* Top Row: Icon & Optional Badge */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="shrink-0">{renderCourseIcon(course)}</div>
-                    {course.popular && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-primary-50 text-primary-700 border border-primary-200/70">
-                        Popular
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title */}
-                  <h2 className="font-serif text-xl sm:text-2xl text-neutral-900 font-normal leading-snug group-hover:text-primary-600 transition-colors">
-                    {course.title}
-                  </h2>
-
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-neutral-500 line-clamp-3 leading-relaxed">
-                    {course.summary ||
-                      "Build scalable, high-performance web applications with modern best practices."}
-                  </p>
-                </div>
-
-                {/* Footer Stats Row */}
-                <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between text-[11px] sm:text-xs text-neutral-500 font-medium">
-                  <span className="inline-flex items-center gap-1.5 text-neutral-600">
-                    <BarChart2 className="w-3.5 h-3.5 text-neutral-400" strokeWidth={1.8} />
-                    {formattedLevel}
-                  </span>
-                  <span className="text-neutral-200">•</span>
-                  <span className="inline-flex items-center gap-1.5 text-neutral-600">
-                    <Clock className="w-3.5 h-3.5 text-neutral-400" strokeWidth={1.8} />
-                    18h 24m
-                  </span>
-                  <span className="text-neutral-200">•</span>
-                  <span className="inline-flex items-center gap-1.5 text-neutral-600">
-                    <Layers className="w-3.5 h-3.5 text-neutral-400" strokeWidth={1.8} />
-                    {moduleCount} modules
-                  </span>
-                </div>
-              </Link>
+                id={course._id}
+                slug={course.slug}
+                title={course.title}
+                summary={course.summary}
+                level={course.level}
+                moduleCount={moduleCount}
+                popular={course.popular}
+                icon={renderCourseIcon(course)}
+              />
             );
           })}
         </div>

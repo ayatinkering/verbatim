@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import posthog from "posthog-js";
 import { Navbar } from "@/components/nav/navbar";
 import { HeroSection } from "@/components/home/hero-section";
 import { FeaturedCourses } from "@/components/home/featured-courses";
@@ -8,6 +9,7 @@ import { BottomGraphic } from "@/components/home/bottom-graphic";
 
 export default function HomePage() {
   const handleExplore = () => {
+    posthog.capture("hero_explore_clicked");
     const coursesSection = document.getElementById("courses-section");
     if (coursesSection) {
       coursesSection.scrollIntoView({ behavior: "smooth" });
@@ -15,6 +17,9 @@ export default function HomePage() {
   };
 
   const handleSearch = (query: string) => {
+    posthog.capture("hero_search_submitted", {
+      query_length: query.length,
+    });
     console.log("Searching for:", query);
   };
 

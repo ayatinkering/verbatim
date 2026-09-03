@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, BarChart2, Bookmark, Clock, Layers, Users } from "lucide-react";
+import posthog from "posthog-js";
 import { Breadcrumbs } from "@/components/nav/breadcrumbs";
 import { urlFor } from "@/sanity/lib/image";
 import { formatDuration, formatStudentCount } from "@/lib/utils";
@@ -149,6 +150,14 @@ export function CourseHero({
           <div className="flex items-center gap-3 pt-2 sm:pt-3">
             <Link
               href={continueHref}
+              onClick={() =>
+                posthog.capture("course_started", {
+                  course_id: course._id,
+                  course_slug: course.slug,
+                  course_title: course.title,
+                  destination: continueHref,
+                })
+              }
               className="h-11 sm:h-12 px-6 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-medium text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
             >
               <span>Continue Learning</span>
@@ -160,7 +169,15 @@ export function CourseHero({
 
             <button
               type="button"
-              onClick={() => setIsBookmarked(!isBookmarked)}
+              onClick={() => {
+              setIsBookmarked(!isBookmarked);
+              posthog.capture("course_bookmarked", {
+                course_id: course._id,
+                course_slug: course.slug,
+                course_title: course.title,
+                bookmarked: !isBookmarked,
+              });
+            }}
               className={`h-11 sm:h-12 px-5 rounded-xl border border-neutral-200/90 font-medium text-sm sm:text-base transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 ${
                 isBookmarked
                   ? "bg-primary-50 text-primary-700 border-primary-300"

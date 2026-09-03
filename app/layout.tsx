@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
+import { PostHogIdentify } from "@/components/posthog-identify";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-[#FAFCF9] text-neutral-900">
         <ClerkProvider>
+          <PostHogIdentify />
           {children}
         </ClerkProvider>
       </body>
