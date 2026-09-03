@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
@@ -32,7 +33,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-[#FAFCF9] text-neutral-900">
         <ClerkProvider>
-          {children}
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
         </ClerkProvider>
       </body>
     </html>
