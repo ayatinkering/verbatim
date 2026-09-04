@@ -16,9 +16,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Verbatim - Design System",
-  description: "A unified design language for Verbatim learning platform.",
+  title: "Verbatim - Agent-Native Learning Workspace",
+  description: "A WebMCP-native learning environment where AI agents can collaboratively navigate, search, and modify your learning journey.",
 };
+
+const hasClerkKey = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function RootLayout({
   children,
@@ -31,9 +33,13 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#FAFCF9] text-neutral-900">
-        <ClerkProvider>
-          {children}
-        </ClerkProvider>
+        {hasClerkKey ? (
+          <ClerkProvider>
+            {children}
+          </ClerkProvider>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

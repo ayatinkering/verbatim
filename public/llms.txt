@@ -1,0 +1,38 @@
+﻿# Verbatim — Agent-Native Learning Workspace
+
+Verbatim is an agent-native learning platform powered by WebMCP. Rather than browsing via visual clicks, AI agents interact directly with the website's structured capabilities to search, inspect, plan, open lessons, and update learner progress.
+
+## What Agents Can Do
+Agents accessing Verbatim via WebMCP can:
+- **Search Learning Corpus**: Query 120 lessons across 10 courses with fuzzy/semantic keyword matching.
+- **Inspect Lessons**: Read complete learning objectives, notes, key points, duration, and prerequisites.
+- **Read Learner State**: Access currently opened lessons, completed lessons count, in-progress items, and active plans.
+- **Create & Adapt Learning Plans**: Generate time-budgeted, sequenced curricula that adapt when user time constraints change (e.g. 25 min to 10 min).
+- **Open Lessons**: Directly manipulate the visible Verbatim learning workspace to display and play lessons.
+- **Update Progress**: Mark lessons as completed, dynamically updating visible learner progress meters.
+
+## Available WebMCP Tools
+The application registers these 6 tools directly on document.modelContext:
+
+1. search_learning({ query, course?, topic?, limit? })
+   - Searches the 120-lesson corpus. Returns lesson ID, title, course, module, summary, duration, and relevance.
+
+2. inspect_lesson({ lessonId })
+   - Returns deep lesson details including title, objectives, notes, key points, videoUrl, proTips, and related modules.
+
+3. get_learning_state({})
+   - Returns learner's current progress, completed lessons list, active plan, and current goal.
+
+4. create_learning_plan({ topic, timeBudget, preferences? })
+   - Produces an actionable, sequenced learning plan that fits within the time budget.
+
+5. open_lesson({ lessonId })
+   - Triggers the live workspace to navigate to and display the lesson view.
+
+6. update_learning_progress({ lessonId, status: "completed" | "in_progress" | "not_started" })
+   - Updates learner progress counters across the entire platform.
+
+## Human + Agent Collaborative Loop
+- The human learner remains in control at all times.
+- The agent reasons, searches, and proposes plans according to user instructions.
+- If the human changes their time budget or requirements, the agent adapts the plan.
